@@ -1,10 +1,10 @@
 #!/bin/bash
-export SERVER_PORT=8000
+export SERVER_PORT=8888
 export AI_SERVER_ENV=production
 export LC_ALL=en_US.UTF-8
 
 # auto start uwsgi
-cd /projects/AI_SERVER
+cd /home/phytium/projects/AI_SERVER
 pids=$(lsof -i:$SERVER_PORT | awk '{print $2}' | grep -v "PID" | tr -s '\n' ' ')
 echo "pids=$pids"
 if [[ ! ${pids} ]]; then
