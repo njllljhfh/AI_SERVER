@@ -1,0 +1,14 @@
+{
+  "code": 1,
+  "message": "result1 获取成功",
+  "data": [
+    {
+      "person_id": "person_id_0",
+      "score": 0.891
+    },
+    {
+      "person_id": "person_id_1",
+      "score": 0.841
+    }
+  ]
+}

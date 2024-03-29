@@ -1,0 +1,48 @@
+{
+  "岗位": [
+    {
+      "岗位名称": "岗位1",
+      "number": 2,
+      "优先级": 1,
+      "persons": [
+        {
+          "person_id": 1,
+          "name": "人员1",
+          "is_suitable": 1,
+          "is_new": 1
+        },
+        {
+          "person_id": 2,
+          "name": "人员2",
+          "is_suitable": 1,
+          "is_new": 1
+        }
+      ]
+    },
+    {
+      "岗位名称": "岗位2",
+      "number": 3,
+      "优先级": 3,
+      "persons": [
+        {
+          "person_id": 3,
+          "name": "人员3",
+          "is_suitable": 1,
+          "is_new": 1
+        },
+        {
+          "person_id": 4,
+          "name": "人员4",
+          "is_suitable": 1,
+          "is_new": 1
+        },
+        {
+          "person_id": 5,
+          "name": "人员5",
+          "is_suitable": 1,
+          "is_new": 1
+        }
+      ]
+    }
+  ]
+}

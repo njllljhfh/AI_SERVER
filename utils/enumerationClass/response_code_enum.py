@@ -28,18 +28,23 @@ def jsonify(code, msg=None, data=None):
 @unique
 class ResponseCode(BaseEnum):
     # 通用
-    SUCCESS = 0
-    UNKNOWN_ERROR = 1
-    PARAMETER_ERROR = 2
+    SUCCESS = 1
+    UNKNOWN_ERROR = 2
+    PARAMETER_ERROR = 3
 
     # 算法
+    ALGORITHM_ERROR = 1000
 
     @classmethod
     def value_name(cls, value):
-        value_map = {
-            # 通用
-            cls.SUCCESS.value: "成功",
-            cls.UNKNOWN_ERROR.value: "未知错误",
-            cls.PARAMETER_ERROR.value: "请求参数错误",
-        }
-        return value_map.get(value)
+        return response_code_value_map.get(value)
+
+
+response_code_value_map = {
+    # 通用
+    ResponseCode.SUCCESS.value: "成功",
+    ResponseCode.UNKNOWN_ERROR.value: "未知错误",
+    ResponseCode.PARAMETER_ERROR.value: "请求参数错误",
+    # 算法
+    ResponseCode.ALGORITHM_ERROR.value: "算法错误",
+}
