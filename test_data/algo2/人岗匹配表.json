@@ -1,0 +1,31 @@
+{
+	"code": 1,
+	"message":"result3 获取成功",
+	"data":{
+		"header":[
+			"person id_0",
+			"person id_1",
+			"person id_2"
+			],
+		"position":[
+			{
+			"position_id":"person id_0",
+			"person id_0":0.841,
+			"person id_1":0.820,
+			"person id_2":0.838
+			},
+			{
+			"position_id":"person id_1",
+			"person id_0":0.841,
+			"person id_1":0.820,
+			"person id_2":0.838
+			},
+			{
+			"position_id":"person id_2",
+			"person id_0":0.841,
+			"person id_1":0.820,
+			"person id_2":0.838
+			}
+		]
+	}
+}
