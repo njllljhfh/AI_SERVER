@@ -33,7 +33,7 @@ def api_algorithm1(option=None):
 
     if option == Option.person_rec.value:
         params = {
-            'option': 1,
+            'option': option,
             'task': '任务1',
             'positions': [
                 positions_data['position_id_0'],
@@ -45,7 +45,7 @@ def api_algorithm1(option=None):
         }
     elif option == Option.position_rec.value:
         params = {
-            'option': 2,
+            'option': option,
             'task': '任务1',
             'positions': [
                 positions_data['position_id_0'],
@@ -57,7 +57,7 @@ def api_algorithm1(option=None):
         }
     else:
         params = {
-            'option': 3,
+            'option': option,
             'task': '任务1',
             'positions': random.sample(list(positions_data.values()), 2),
             'persons': random.sample(list(persons_data.values()), 2),
