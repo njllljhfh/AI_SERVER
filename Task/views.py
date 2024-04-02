@@ -96,23 +96,6 @@ class Algorithm1(View):
 class Algorithm2(View):
 
     def post(self, request):
-        # test
-        # data = {}
-        # try:
-        #     params = json.loads(request.body)
-        #     a = float(params.get('a'))
-        #     b = float(params.get('b'))
-        #     result = a / b
-        #     data = {
-        #         'result': result,
-        #     }
-        #     logger.info(f'Algorithm2 --- res={result}')
-        #
-        #     return JsonResponse(jsonify(code=ResponseCode.SUCCESS.value, data=data))
-        # except Exception as e:
-        #     logger.error(e, exc_info=True)
-        #     return JsonResponse(jsonify(data=data, code=ResponseCode.UNKNOWN_ERROR.value))
-
         try:
             params = json.loads(request.body)
             task = params['task']  # 部署任务，包括任务名，和json数据（result3输出的结果）
@@ -188,23 +171,6 @@ class Algorithm2(View):
 class Algorithm3(View):
 
     def post(self, request):
-        # test
-        # data = {}
-        # try:
-        #     data = json.loads(request.body)
-        #     a = float(data.get('a'))
-        #     b = float(data.get('b'))
-        #     result = a / b
-        #     data = {
-        #         'result': result,
-        #     }
-        #     logger.info(f'Algorithm3 --- res={result}')
-        #
-        #     return JsonResponse(jsonify(code=ResponseCode.SUCCESS.value, data=data))
-        # except Exception as e:
-        #     logger.error(e, exc_info=True)
-        #     return JsonResponse(jsonify(data=data, code=ResponseCode.UNKNOWN_ERROR.value))
-
         try:
             params = json.loads(request.body)
             task = params['task']  # 部署任务：中船提供的数据，json数据
@@ -247,7 +213,7 @@ class Algorithm3(View):
         try:
             # res = algorithm3(task, scheduling, task_time, person_choice, manual_choice)
             # 测试数据
-            with open('./test_data/algo1/r1.json', 'r') as f:
+            with open('./test_data/algo3/algo3_result.json', 'r', encoding='utf-8') as f:
                 res = json.loads(f.read())
             # ---
 
