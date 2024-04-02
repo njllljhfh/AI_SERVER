@@ -167,7 +167,7 @@ class Algorithm2(View):
             # res = algorithm2(task, opt_method, base_data, schedule_days,
             #                  max_days, max_shifts, shift_nums)
             # 测试数据
-            with open('./test_data/algo1/r1.json', 'r') as f:
+            with open('./test_data/algo2/输出结果排班表&辅助决策输入人工排班表.json', 'r', encoding='utf-8') as f:
                 res = json.loads(f.read())
             # ---
 

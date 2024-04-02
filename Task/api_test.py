@@ -10,7 +10,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 # print(sys.path)
 
-from utils.enumerationClass.common_enum import Option
+from utils.enumerationClass.common_enum import Option, OptMethod
 
 IP = '127.0.0.1'
 PORT = '8888'
@@ -19,12 +19,6 @@ PORT = '8888'
 def api_algorithm1(option=None):
     url = f'http://{IP}:{PORT}/api/task/algorithm1'
     print(f"测试url: {url}")
-
-    # 测试数据
-    # params = {
-    #     'a': 1,
-    #     'b': 2,
-    # }
 
     with open('../test_data/algo1/persons.json', 'r', encoding='utf-8') as f:
         persons_data = json.loads(f.read())
@@ -77,6 +71,50 @@ def api_algorithm1(option=None):
     print('- ' * 30)
 
 
+def api_algorithm2(opt_method=None):
+    url = f'http://{IP}:{PORT}/api/task/algorithm2'
+    print(f"测试url: {url}")
+
+    # 测试数据
+    # params = {
+    #     'a': 1,
+    #     'b': 2,
+    # }
+
+    with open('../test_data/algo1/r3.json', 'r', encoding='utf-8') as f:
+        task = json.loads(f.read())
+
+    params = {
+        'task': task,
+        'opt_method': opt_method,
+        'base_data': None,
+        'schedule_days': 25,
+        'max_days': 5,
+        'max_shifts': 30,
+        'shift_nums': [],
+
+    }
+
+    if opt_method == OptMethod.assistant_decision.value:
+        with open('../test_data/algo2/输出结果排班表&辅助决策输入人工排班表.json', 'r', encoding='utf-8') as f:
+            # 中船的决策数据（格式为算法二输出的json格式）
+            algo3_res = json.loads(f.read())
+        params['base_data'] = algo3_res['data']
+
+    # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
+    response = requests.post(url, json=params, timeout=300)
+
+    if response.status_code == 200:
+        print(f'api_algorithm2 http请求成功！')
+    else:
+        print(f'api_algorithm2 http请求成功！ 响应码：{response.status_code}')
+
+    # 解析 JSON 响应（如果返回的是 JSON 数据）
+    json_response = response.json()
+    print(f'api_algorithm2-后端返回数据：{json_response}')
+    print('- ' * 30)
+
+
 def api_myTest():
     # 定义接口的URL
     url = f'http://{IP}:{PORT}/api/task/myTest'
@@ -110,3 +148,9 @@ if __name__ == '__main__':
     # option = Option.position_rec.value  # 2 战位推荐
     # option = Option.match_matrix.value  # 3 匹配矩阵
     api_algorithm1(option=option)
+    # -------------------------------------------------------
+
+    # opt_method = OptMethod.assistant_decision.value  # 辅助决策
+    opt_method = OptMethod.global_opt.value  # 全局优化
+    api_algorithm2(opt_method=opt_method)
+    # -------------------------------------------------------
