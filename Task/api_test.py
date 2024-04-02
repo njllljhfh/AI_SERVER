@@ -84,7 +84,7 @@ def api_algorithm1(option=None):
         position_info_path = '../test_data/algo1/all_data/positions.json'
     else:
         person_info_path = '../test_data/algo1/all_data/persons.json'
-        position_info_path = '../test_data/algo1/position_data/position.json'
+        position_info_path = '../test_data/algo1/all_data/positions.json'
 
     with open(position_info_path, 'r', encoding='utf-8') as f:
         positions_data = json.loads(f.read())
@@ -220,9 +220,9 @@ if __name__ == '__main__':
     # api_myTest()
 
     # post 算法1测试接口
-    option = Option.person_rec.value  # 1 船员推荐
+    # option = Option.person_rec.value  # 1 船员推荐
     # option = Option.position_rec.value  # 2 战位推荐
-    # option = Option.match_matrix.value  # 3 匹配矩阵
+    option = Option.match_matrix.value  # 3 匹配矩阵
     api_algorithm1(option=option)
     # -------------------------------------------------------
 
