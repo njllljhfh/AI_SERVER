@@ -4,6 +4,7 @@ import logging
 from django.http import JsonResponse
 from django.views import View
 
+from algorithms.person_position_match import recommend_person
 from utils.enumerationClass.common_enum import Option, OptMethod, PersonChoice
 from utils.enumerationClass.response_code_enum import jsonify, ResponseCode
 
@@ -73,11 +74,16 @@ class Algorithm1(View):
             return JsonResponse(jsonify(code=ResponseCode.UNKNOWN_ERROR.value))
 
         try:
-            # res = algorithm1(option, task, positions, persons)
             # 测试数据
-            with open('./test_data/algo1/r1.json', 'r') as f:
-                res = json.loads(f.read())
+            # with open('./test_data/algo1/r1.json', 'r') as f:
+            #     res = json.loads(f.read())
             # ---
+            if option == Option.person_rec.value:
+                res = recommend_person(model_path='./algorithms/bert-base-chinese')
+            elif option == Option.position_rec.value:
+                res = recommend_person(model_path='./algorithms/bert-base-chinese')
+            else:
+                res = recommend_person(model_path='./algorithms/bert-base-chinese')
 
             if res['code'] == ResponseCode.SUCCESS.value:
                 logger.info(f'algorithm1 执行返回成功')

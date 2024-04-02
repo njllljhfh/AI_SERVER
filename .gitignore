@@ -160,3 +160,4 @@ cython_debug/
 .idea/*
 uwsgi.pid
 logs/*
+algorithms/bert-base-chinese/*.bin
