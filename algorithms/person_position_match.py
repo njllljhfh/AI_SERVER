@@ -278,8 +278,8 @@ if __name__ == '__main__':
     json.dump(res1, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result1.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
     # - - -
 
-    person_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/person_data/person_13.json'
-    position_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
+    person_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/person_data/person_13.json'
+    position_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
     with open(person_info_path, 'r', encoding='utf-8') as f:
         person_data = json.load(f)
     with open(position_info_path, encoding='utf-8') as f:
@@ -290,8 +290,8 @@ if __name__ == '__main__':
     json.dump(res2, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result2.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
     # - - -
 
-    person_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json'
-    position_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
+    person_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json'
+    position_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
     with open(person_info_path, 'r', encoding='utf-8') as f:
         person_data = json.load(f)
     with open(position_info_path, encoding='utf-8') as f:
