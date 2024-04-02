@@ -86,16 +86,16 @@ def api_algorithm1(option=None):
         person_info_path = '../test_data/algo1/all_data/persons.json'
         position_info_path = '../test_data/algo1/position_data/position.json'
 
-    with open(person_info_path, 'r', encoding='utf-8') as f:
-        persons_data = json.loads(f.read())
     with open(position_info_path, 'r', encoding='utf-8') as f:
         positions_data = json.loads(f.read())
+    with open(person_info_path, 'r', encoding='utf-8') as f:
+        persons_data = json.loads(f.read())
 
     params = {
         'option': option,
         'task': '任务1',
-        'positions': persons_data,
-        'persons': positions_data,
+        'positions': positions_data,
+        'persons': persons_data,
     }
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
