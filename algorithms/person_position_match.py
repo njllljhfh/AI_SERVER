@@ -114,6 +114,62 @@ def compute_matching_matrix(model, pos_ids, pos_info, person_ids, person_info):
 #     data = [{'person_id': x1, 'score': x2} for x1, x2 in data]
 #     res = {'code': 1, 'message': "舰员推荐结果获取成功", 'data': data}
 #     return res
+#
+#
+# 战位推荐
+# def recommend_position(model_path, person_info_path, position_info_path):
+#     pos_info = []
+#     pos_ids = []
+#     with open(position_info_path, encoding='utf-8') as f:
+#         content = json.load(f)
+#         for k, v in content.items():
+#             pos_ids.append(k)
+#             pos_info.append(v)
+#     person_ids = []
+#     person_info = []
+#     with open(person_info_path, 'r', encoding='utf-8') as f:
+#         content = json.load(f)
+#         for k, v in content.items():
+#             person_ids.append(k)
+#             person_info.append(v)
+#     model_device = "cuda" if torch.cuda.is_available() else "cpu"
+#     model = BertSimilarity(model_name_or_path=model_path, device=model_device)
+#     matching_matrix = compute_matching_matrix(model, pos_ids, pos_info, person_ids, person_info)
+#     scores = [x[0] for x in matching_matrix]
+#     data = [[pos_id, score] for pos_id, score in zip(pos_ids, scores)]
+#     data = sorted(data, key=lambda x: x[1], reverse=True)
+#     data = [{'position_id': x1, 'score': x2} for x1, x2 in data]
+#     res = {'code': 1, 'message': "战位推荐结果获取成功", 'data': data}
+#     return res
+#
+#
+# 匹配矩阵生成
+# def recommend_matrix(model_path, person_info_path, position_info_path):
+#     pos_info = []
+#     pos_ids = []
+#     with open(position_info_path, encoding='utf-8') as f:
+#         content = json.load(f)
+#         for k, v in content.items():
+#             pos_ids.append(k)
+#             pos_info.append(v)
+#     person_ids = []
+#     person_info = []
+#     with open(person_info_path, 'r', encoding='utf-8') as f:
+#         content = json.load(f)
+#         for k, v in content.items():
+#             person_ids.append(k)
+#             person_info.append(v)
+#     model_device = "cuda" if torch.cuda.is_available() else "cpu"
+#     model = BertSimilarity(model_name_or_path=model_path, device=model_device)
+#     matching_matrix = compute_matching_matrix(model, pos_ids, pos_info, person_ids, person_info)
+#     data = {'header': person_ids, 'position': []}
+#     for i in range(len(matching_matrix)):
+#         data['position'].append({'position_id': pos_ids[i]})
+#         for j in range(len(matching_matrix[i])):
+#             data['position'][-1][person_ids[j]] = matching_matrix[i][j]
+#     res = {'code': 1, 'message': "匹配矩阵获取成功", 'data': data}
+#     return res
+
 
 def recommend_person(model_path, person_data, position_data):
     pos_info = []
@@ -141,21 +197,20 @@ def recommend_person(model_path, person_data, position_data):
 
 
 # 战位推荐
-def recommend_position(model_path, person_info_path, position_info_path):
+def recommend_position(model_path, person_data, position_data):
     pos_info = []
     pos_ids = []
-    with open(position_info_path, encoding='utf-8') as f:
-        content = json.load(f)
-        for k, v in content.items():
-            pos_ids.append(k)
-            pos_info.append(v)
+    content = position_data
+    for k, v in content.items():
+        pos_ids.append(k)
+        pos_info.append(v)
+
     person_ids = []
     person_info = []
-    with open(person_info_path, 'r', encoding='utf-8') as f:
-        content = json.load(f)
-        for k, v in content.items():
-            person_ids.append(k)
-            person_info.append(v)
+    content = person_data
+    for k, v in content.items():
+        person_ids.append(k)
+        person_info.append(v)
     model_device = "cuda" if torch.cuda.is_available() else "cpu"
     model = BertSimilarity(model_name_or_path=model_path, device=model_device)
     matching_matrix = compute_matching_matrix(model, pos_ids, pos_info, person_ids, person_info)
@@ -168,21 +223,20 @@ def recommend_position(model_path, person_info_path, position_info_path):
 
 
 # 匹配矩阵生成
-def recommend_matrix(model_path, person_info_path, position_info_path):
+def recommend_matrix(model_path, person_data, position_data):
     pos_info = []
     pos_ids = []
-    with open(position_info_path, encoding='utf-8') as f:
-        content = json.load(f)
-        for k, v in content.items():
-            pos_ids.append(k)
-            pos_info.append(v)
+    content = position_data
+    for k, v in content.items():
+        pos_ids.append(k)
+        pos_info.append(v)
+
     person_ids = []
     person_info = []
-    with open(person_info_path, 'r', encoding='utf-8') as f:
-        content = json.load(f)
-        for k, v in content.items():
-            person_ids.append(k)
-            person_info.append(v)
+    content = person_data
+    for k, v in content.items():
+        person_ids.append(k)
+        person_info.append(v)
     model_device = "cuda" if torch.cuda.is_available() else "cpu"
     model = BertSimilarity(model_name_or_path=model_path, device=model_device)
     matching_matrix = compute_matching_matrix(model, pos_ids, pos_info, person_ids, person_info)
@@ -197,17 +251,6 @@ def recommend_matrix(model_path, person_info_path, position_info_path):
 
 if __name__ == '__main__':
     start_time = time.time()
-    person_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json'
-    position_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/position_data/position_35.json'
-    with open(position_info_path, encoding='utf-8') as f:
-        position_data = json.load(f)
-    with open(person_info_path, 'r', encoding='utf-8') as f:
-        person_data = json.load(f)
-    res1 = recommend_person(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
-                            person_data=person_data,
-                            position_data=position_data)
-    json.dump(res1, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result1.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
-
     # res1 = recommend_person(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
     #                         person_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json',
     #                         position_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/position_data/position_35.json')
@@ -222,5 +265,41 @@ if __name__ == '__main__':
     #                         person_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json',
     #                         position_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json')
     # json.dump(res3, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result3.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
+
+    person_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json'
+    position_info_path = '/home/phytium/projects/AI_SERVER/test_data/algo1/position_data/position_35.json'
+    with open(person_info_path, 'r', encoding='utf-8') as f:
+        person_data = json.load(f)
+    with open(position_info_path, encoding='utf-8') as f:
+        position_data = json.load(f)
+    res1 = recommend_person(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
+                            person_data=person_data,
+                            position_data=position_data)
+    json.dump(res1, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result1.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
+    # - - -
+
+    person_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/person_data/person_13.json'
+    position_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
+    with open(person_info_path, 'r', encoding='utf-8') as f:
+        person_data = json.load(f)
+    with open(position_info_path, encoding='utf-8') as f:
+        position_data = json.load(f)
+    res2 = recommend_position(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
+                              person_data=person_data,
+                              position_data=position_data)
+    json.dump(res2, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result2.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
+    # - - -
+
+    person_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json'
+    position_info_path ='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json'
+    with open(person_info_path, 'r', encoding='utf-8') as f:
+        person_data = json.load(f)
+    with open(position_info_path, encoding='utf-8') as f:
+        position_data = json.load(f)
+    res3 = recommend_matrix(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
+                            person_data=person_data,
+                            position_data=position_data)
+    json.dump(res3, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result3.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
+
     total_time = time.time() - start_time
     print('total running time: %.2f' % total_time)

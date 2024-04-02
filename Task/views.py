@@ -82,14 +82,14 @@ class Algorithm1(View):
                 res = recommend_person(model_path=r"./algorithms/bert-base-chinese",
                                        person_data=persons,
                                        position_data=positions)
-            # elif option == Option.position_rec.value:
-            #     res = recommend_position(model_path='./algorithms/bert-base-chinese',
-            #                              person_data=persons,
-            #                              position_data=positions)
-            # else:
-            #     res = recommend_matrix(model_path='./algorithms/bert-base-chinese',
-            #                            person_data=persons,
-            #                            position_data=positions)
+            elif option == Option.position_rec.value:
+                res = recommend_position(model_path='./algorithms/bert-base-chinese',
+                                         person_data=persons,
+                                         position_data=positions)
+            else:
+                res = recommend_matrix(model_path='./algorithms/bert-base-chinese',
+                                       person_data=persons,
+                                       position_data=positions)
 
             if res['code'] == ResponseCode.SUCCESS.value:
                 logger.info(f'algorithm1 执行返回成功')
