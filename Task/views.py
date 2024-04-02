@@ -4,7 +4,7 @@ import logging
 from django.http import JsonResponse
 from django.views import View
 
-from algorithms.person_position_match import recommend_person, recommend_position, recommend_matrix
+from algorithms.person_position_match import recommend_person, recommend_position, recommend_matrix, NpEncoder
 from utils.enumerationClass.common_enum import Option, OptMethod, PersonChoice
 from utils.enumerationClass.response_code_enum import jsonify, ResponseCode
 
@@ -79,21 +79,21 @@ class Algorithm1(View):
             #     res = json.loads(f.read())
             # ---
             if option == Option.person_rec.value:
-                res = recommend_person(model_path='./algorithms/bert-base-chinese',
+                res = recommend_person(model_path=r"./algorithms/bert-base-chinese",
                                        person_data=persons,
                                        position_data=positions)
-            elif option == Option.position_rec.value:
-                res = recommend_position(model_path='./algorithms/bert-base-chinese',
-                                         person_data=persons,
-                                         position_data=positions)
-            else:
-                res = recommend_matrix(model_path='./algorithms/bert-base-chinese',
-                                       person_data=persons,
-                                       position_data=positions)
+            # elif option == Option.position_rec.value:
+            #     res = recommend_position(model_path='./algorithms/bert-base-chinese',
+            #                              person_data=persons,
+            #                              position_data=positions)
+            # else:
+            #     res = recommend_matrix(model_path='./algorithms/bert-base-chinese',
+            #                            person_data=persons,
+            #                            position_data=positions)
 
             if res['code'] == ResponseCode.SUCCESS.value:
                 logger.info(f'algorithm1 执行返回成功')
-                return JsonResponse(jsonify(code=ResponseCode.SUCCESS.value, data=res['data']))
+                return JsonResponse(jsonify(code=ResponseCode.SUCCESS.value, data=res['data']), encoder=NpEncoder)
             else:
                 logger.info(f'algorithm1 执行返回失败，code 为 {res["code"]}')
                 return JsonResponse(jsonify(code=res['code'], msg=res['message']))

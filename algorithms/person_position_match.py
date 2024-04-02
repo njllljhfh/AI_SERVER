@@ -208,6 +208,11 @@ if __name__ == '__main__':
                             position_data=position_data)
     json.dump(res1, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result1.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
 
+    # res1 = recommend_person(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
+    #                         person_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/persons.json',
+    #                         position_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/position_data/position_35.json')
+    # json.dump(res1, open('/home/phytium/projects/AI_SERVER/test_data/algo1/result1.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=2, cls=NpEncoder)
+    #
     # res2 = recommend_position(model_path=r"/home/phytium/projects/AI_SERVER/algorithms/bert-base-chinese",
     #                           person_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/person_data/person_13.json',
     #                           position_info_path='/home/phytium/projects/AI_SERVER/test_data/algo1/all_data/positions.json')
