@@ -16,46 +16,87 @@ IP = '127.0.0.1'
 PORT = '8888'
 
 
+# def api_algorithm1(option=None):
+#     url = f'http://{IP}:{PORT}/api/task/algorithm1'
+#     print(f"测试url: {url}")
+#
+#     with open('../test_data/algo1/persons.json', 'r', encoding='utf-8') as f:
+#         persons_data = json.loads(f.read())
+#     with open('../test_data/algo1/positions.json', 'r', encoding='utf-8') as f:
+#         positions_data = json.loads(f.read())
+#
+#     if option == Option.person_rec.value:
+#         params = {
+#             'option': option,
+#             'task': '任务1',
+#             'positions': [
+#                 positions_data['position_id_0'],
+#             ],
+#             'persons': [
+#                 persons_data['person_id_0'],
+#                 persons_data['person_id_1'],
+#             ],
+#         }
+#     elif option == Option.position_rec.value:
+#         params = {
+#             'option': option,
+#             'task': '任务1',
+#             'positions': [
+#                 positions_data['position_id_0'],
+#                 positions_data['position_id_1'],
+#             ],
+#             'persons': [
+#                 persons_data['person_id_0'],
+#             ],
+#         }
+#     else:
+#         params = {
+#             'option': option,
+#             'task': '任务1',
+#             'positions': random.sample(list(positions_data.values()), 2),
+#             'persons': random.sample(list(persons_data.values()), 2),
+#         }
+#
+#     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
+#     response = requests.post(url, json=params, timeout=300)
+#
+#     if response.status_code == 200:
+#         print(f'api_algorithm1 http请求成功！')
+#     else:
+#         print(f'api_algorithm1 http请求成功！ 响应码：{response.status_code}')
+#
+#     # 解析 JSON 响应（如果返回的是 JSON 数据）
+#     json_response = response.json()
+#     print(f'api_algorithm1-后端返回数据：{json_response}')
+#     print('- ' * 30)
+
+
 def api_algorithm1(option=None):
     url = f'http://{IP}:{PORT}/api/task/algorithm1'
     print(f"测试url: {url}")
 
-    with open('../test_data/algo1/persons.json', 'r', encoding='utf-8') as f:
+    if option == Option.person_rec.value:
+        person_info_path = '../test_data/algo1/all_data/persons.json'
+        position_info_path = '../test_data/algo1/position_data/position_35.json'
+
+    elif option == Option.position_rec.value:
+        person_info_path = '../test_data/algo1/person_data/person_13.json'
+        position_info_path = '../test_data/algo1/all_data/positions.json'
+    else:
+        person_info_path = '../test_data/algo1/all_data/persons.json'
+        position_info_path = '../test_data/algo1/position_data/position.json'
+
+    with open(person_info_path, 'r', encoding='utf-8') as f:
         persons_data = json.loads(f.read())
-    with open('../test_data/algo1/positions.json', 'r', encoding='utf-8') as f:
+    with open(position_info_path, 'r', encoding='utf-8') as f:
         positions_data = json.loads(f.read())
 
-    if option == Option.person_rec.value:
-        params = {
-            'option': option,
-            'task': '任务1',
-            'positions': [
-                positions_data['position_id_0'],
-            ],
-            'persons': [
-                persons_data['person_id_0'],
-                persons_data['person_id_1'],
-            ],
-        }
-    elif option == Option.position_rec.value:
-        params = {
-            'option': option,
-            'task': '任务1',
-            'positions': [
-                positions_data['position_id_0'],
-                positions_data['position_id_1'],
-            ],
-            'persons': [
-                persons_data['person_id_0'],
-            ],
-        }
-    else:
-        params = {
-            'option': option,
-            'task': '任务1',
-            'positions': random.sample(list(positions_data.values()), 2),
-            'persons': random.sample(list(persons_data.values()), 2),
-        }
+    params = {
+        'option': option,
+        'task': '任务1',
+        'positions': persons_data,
+        'persons': positions_data,
+    }
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
     response = requests.post(url, json=params, timeout=300)
@@ -185,11 +226,11 @@ if __name__ == '__main__':
     api_algorithm1(option=option)
     # -------------------------------------------------------
 
-    # opt_method = OptMethod.assistant_decision.value  # 辅助决策
-    opt_method = OptMethod.global_opt.value  # 全局优化
-    api_algorithm2(opt_method=opt_method)
-    # -------------------------------------------------------
-
-    person_choice = PersonChoice.no_need.value  # 人员不需要逐个确认
-    # person_choice = PersonChoice.need.value  # 人员需要逐个确认
-    api_algorithm3(person_choice=person_choice)
+    # # opt_method = OptMethod.assistant_decision.value  # 辅助决策
+    # opt_method = OptMethod.global_opt.value  # 全局优化
+    # api_algorithm2(opt_method=opt_method)
+    # # -------------------------------------------------------
+    #
+    # person_choice = PersonChoice.no_need.value  # 人员不需要逐个确认
+    # # person_choice = PersonChoice.need.value  # 人员需要逐个确认
+    # api_algorithm3(person_choice=person_choice)
