@@ -99,7 +99,7 @@ def api_algorithm1(option=None):
     }
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
-    response = requests.post(url, json=params, timeout=300)
+    response = requests.post(url, json=params)
 
     if response.status_code == 200:
         print(f'api_algorithm1 http请求成功！')
@@ -136,7 +136,7 @@ def api_algorithm2(opt_method=None):
         params['base_data'] = algo2_res['data']
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
-    response = requests.post(url, json=params, timeout=300)
+    response = requests.post(url, json=params)
 
     if response.status_code == 200:
         print(f'api_algorithm2 http请求成功！')
@@ -178,7 +178,7 @@ def api_algorithm3(person_choice=None):
         params['manual_choice'] = manual_choice
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
-    response = requests.post(url, json=params, timeout=300)
+    response = requests.post(url, json=params)
 
     if response.status_code == 200:
         print(f'api_algorithm3 http请求成功！')
