@@ -181,10 +181,14 @@ def mutate(schedule, mutation_rate=0.1):
 
 def genetic_algorithm1(K, positions_list, max_S, population_size, generations, match_matrix, test_schedule):
     # 生成初始种群
+    #print('----------------------------')
+    #print("here1")
     population = generate_population_serial(population_size - 1, K, positions_list, max_S)
     population.append(test_schedule)
     best_fitness = float('-inf')
     best_individual = None
+
+
     for generation in range(generations):
         population_fitness = np.zeros(population_size)
         ii = 0
@@ -273,6 +277,8 @@ def genetic_algorithm1(K, positions_list, max_S, population_size, generations, m
 
 def genetic_algorithm2(K, positions_list, max_S, population_size, generations, match_matrix):
     # 生成初始种群
+    #print('----------------------------')
+    #print("here2")
     population = generate_population_serial(population_size, K, positions_list, max_S)
     best_fitness = float('-inf')
     best_individual = None
@@ -364,9 +370,11 @@ def genetic_algorithm2(K, positions_list, max_S, population_size, generations, m
 
 def ga(data, population_size, generations):
     if data['type'] == 1:
+        #print(data)
         population, population_fitness = genetic_algorithm1(data['K'], data['skill_list'], max(data['S']) * data['D'],
                                                             population_size, generations,
                                                             data['skill_matrix'], data['test_schedule'])
+        #(K, positions_list, max_S, population_size, generations, match_matrix, test_schedule)
     elif data['type'] == 2:
         population, population_fitness = genetic_algorithm2(data['K'], data['skill_list'], max(data['S']) * data['D'],
                                                             population_size, generations,
