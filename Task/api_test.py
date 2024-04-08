@@ -115,24 +115,25 @@ def api_algorithm2(opt_method=None):
     url = f'http://{IP}:{PORT}/api/task/algorithm2'
     print(f"测试url: {url}")
 
-    with open('../test_data/algo1/r3.json', 'r', encoding='utf-8') as f:
-        task = json.loads(f.read())
+    params = {}
+    if opt_method == OptMethod.assistant_decision.value:
+        with open('../test_data/algo2/matrix_to_json.json', 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+        params['base_data'] = data['base_data']
+        # params['base_data'] = None
+    else:
+        with open('../test_data/algo2/matrix_to_json2.json', 'r', encoding='utf-8') as json_file:
+            data = json.load(json_file)
+        params['base_data'] = None
 
     params = {
-        'task': task,
-        'opt_method': opt_method,
-        'base_data': None,
-        'schedule_days': 25,
-        'max_days': 5,
-        'max_shifts': 30,
-        'shift_nums': [],
+        'task': data['task'],
+        'opt_method': data['opt_method'],
+        'schedule_days': data['schedule_days'],
+        'max_days': data['max_days'],
+        'max_shifts': data['max_shifts'],
+        'shift_nums': data['shift_nums'],
     }
-
-    if opt_method == OptMethod.assistant_decision.value:
-        with open('../test_data/algo2/输出结果排班表&辅助决策输入人工排班表.json', 'r', encoding='utf-8') as f:
-            # 中船的决策数据（格式为算法二输出的json格式）
-            algo2_res = json.loads(f.read())
-        params['base_data'] = algo2_res['data']
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
     response = requests.post(url, json=params)
@@ -221,15 +222,15 @@ if __name__ == '__main__':
     # post 算法1测试接口
     # option = Option.person_rec.value  # 1 船员推荐
     # option = Option.position_rec.value  # 2 战位推荐
-    option = Option.match_matrix.value  # 3 匹配矩阵
-    api_algorithm1(option=option)
+    # option = Option.match_matrix.value  # 3 匹配矩阵
+    # api_algorithm1(option=option)
     # -------------------------------------------------------
 
-    # # opt_method = OptMethod.assistant_decision.value  # 辅助决策
+    opt_method = OptMethod.assistant_decision.value  # 辅助决策
     # opt_method = OptMethod.global_opt.value  # 全局优化
-    # api_algorithm2(opt_method=opt_method)
-    # # -------------------------------------------------------
-    #
+    api_algorithm2(opt_method=opt_method)
+    # -------------------------------------------------------
+
     # person_choice = PersonChoice.no_need.value  # 人员不需要逐个确认
     # # person_choice = PersonChoice.need.value  # 人员需要逐个确认
     # api_algorithm3(person_choice=person_choice)
