@@ -126,14 +126,12 @@ def api_algorithm2(opt_method=None):
             data = json.load(json_file)
         params['base_data'] = None
 
-    params = {
-        'task': data['task'],
-        'opt_method': data['opt_method'],
-        'schedule_days': data['schedule_days'],
-        'max_days': data['max_days'],
-        'max_shifts': data['max_shifts'],
-        'shift_nums': data['shift_nums'],
-    }
+    params['task'] = data['task']
+    params['opt_method'] = data['opt_method']
+    params['schedule_days'] = data['schedule_days']
+    params['max_days'] = data['max_days']
+    params['max_shifts'] = data['max_shifts']
+    params['shift_nums'] = data['shift_nums']
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
     response = requests.post(url, json=params)
