@@ -17,13 +17,8 @@ class Algorithm1(View):
         try:
             params = json.loads(request.body)
             option = int(params['option'])  # 算法一的那种请求
-            task = str(params['task'])  # 部署任务名称
             positions = params['positions']  # 战位数据
             persons = params['persons']  # 舰员数据
-
-            if not task:
-                msg = f'部署任务，不能为空'
-                return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
             if not positions:
                 msg = f'战位数据，不能为空'

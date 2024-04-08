@@ -78,7 +78,6 @@ def api_algorithm1(option=None):
     if option == Option.person_rec.value:
         person_info_path = '../test_data/algo1/all_data/persons.json'
         position_info_path = '../test_data/algo1/position_data/position_35.json'
-
     elif option == Option.position_rec.value:
         person_info_path = '../test_data/algo1/person_data/person_13.json'
         position_info_path = '../test_data/algo1/all_data/positions.json'
@@ -93,7 +92,7 @@ def api_algorithm1(option=None):
 
     params = {
         'option': option,
-        'task': '任务1',
+        # 'task': '任务1',
         'positions': positions_data,
         'persons': persons_data,
     }
