@@ -2,6 +2,11 @@ import json
 import os  # 导入os模块
 import random
 import time
+# import sys
+#
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# sys.path.append(BASE_DIR)
+
 
 def read_json_file(filename):
     """通用函数从JSON文件读取数据"""
@@ -360,7 +365,7 @@ def out(people_position, position_remaining_required_people):
         data["岗位信息"].append(position_data)
 
     # 将数据写入JSON文件
-    with open("home/phytium/projects/AI_SERVER/test_data/algo3/output_suc.json", "w", encoding="utf-8") as file:
+    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc.json", "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 
@@ -434,7 +439,7 @@ def out_1(people_position, position_remaining_required_people,remaining_people_i
         })
 
     # 将数据写入JSON文件
-    with open("home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json", "w", encoding="utf-8") as file:
+    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json", "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 def task_assignment_choice(data):
@@ -540,7 +545,7 @@ def out_2(people_position, people_position_de,change_people_position, remaining_
             "frequency": info['frequency']
         })
     # 将数据写入JSON文件
-    with open("home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json", "w", encoding="utf-8") as file:
+    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json", "w", encoding="utf-8") as file:
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 def get_people_position_data(data):
@@ -618,7 +623,7 @@ def task_person_algorithm(task_data,people_data,scheduling_data,matching_data,ti
         updated_people_info = {"person": people_list}
 
         # 定义要写入的新JSON文件的路径
-        file_path = 'home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
+        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
 
         # 写入JSON文件
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -645,7 +650,7 @@ def task_person_algorithm(task_data,people_data,scheduling_data,matching_data,ti
         updated_people_info = {"person": people_list}
 
         # 定义要写入的新JSON文件的路径
-        file_path = 'home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
+        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
 
         # 写入JSON文件
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -724,7 +729,7 @@ def task_person_algorithm_choice(task_data,people_data,matching_data,people_posi
         updated_people_info = {"person": people_list}
 
         # 定义要写入的新JSON文件的路径
-        file_path = 'home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json'
+        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json'
 
         # 写入JSON文件
         with open(file_path, 'w', encoding='utf-8') as file:
@@ -741,24 +746,24 @@ if __name__ == '__main__':
     people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people19.json')
 
 
-    scheduling_data=read_json_file('home/phylum/projects/AI_SERVER/test_data/algo3/scheduling_5day_4geng_4gang.json')
+    scheduling_data=read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/scheduling_5day_4geng_4gang.json')
 
-    time_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/task_time1.json')
+    time_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/task_time1.json')
 
-    matching_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/matching_matrix19_4gang.json')
+    matching_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/matching_matrix19_4gang.json')
     # 读取JSON文件并判断code值
-    choice_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/choice_1.json')
+    choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/choice_1.json')
 
 
 
     task_person_algorithm(task_data, people_data, scheduling_data, matching_data, time_data, choice_data)
-    people_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json')
-    people_position_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json')
+    people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json')
+    people_position_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json')
     # 读入系统选择
-    task_assignment_choice_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/people_choice.json')
+    task_assignment_choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people_choice.json')
     task_person_algorithm_choice(task_data, people_data, matching_data,  people_position_data,task_assignment_choice_data,choice_data)
-    people_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json')
-    people_position_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json')
-    task_assignment_choice_data = read_json_file('home/phytium/projects/AI_SERVER/test_data/algo3/people_choice_1.json')
+    people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json')
+    people_position_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json')
+    task_assignment_choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people_choice_1.json')
     task_person_algorithm_choice(task_data, people_data,  matching_data, people_position_data,task_assignment_choice_data,choice_data)
 

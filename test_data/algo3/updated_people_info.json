@@ -1,0 +1,99 @@
+{
+    "person": [
+        {
+            "number": 1,
+            "name": "人员5",
+            "frequency": 1
+        },
+        {
+            "number": 2,
+            "name": "张三",
+            "frequency": 1
+        },
+        {
+            "number": 3,
+            "name": "人员1",
+            "frequency": 2
+        },
+        {
+            "number": 4,
+            "name": "人员2",
+            "frequency": 1
+        },
+        {
+            "number": 5,
+            "name": "张三2",
+            "frequency": 2
+        },
+        {
+            "number": 6,
+            "name": "人员3",
+            "frequency": 0
+        },
+        {
+            "number": 7,
+            "name": "人员4",
+            "frequency": 3
+        },
+        {
+            "number": 8,
+            "name": "张三3",
+            "frequency": 3
+        },
+        {
+            "number": 9,
+            "name": "人员6",
+            "frequency": 1
+        },
+        {
+            "number": 10,
+            "name": "人员7",
+            "frequency": 5
+        },
+        {
+            "number": 11,
+            "name": "人员8",
+            "frequency": 1
+        },
+        {
+            "number": 12,
+            "name": "人员9",
+            "frequency": 3
+        },
+        {
+            "number": 13,
+            "name": "人员10",
+            "frequency": 2
+        },
+        {
+            "number": 14,
+            "name": "人员11",
+            "frequency": 3
+        },
+        {
+            "number": 15,
+            "name": "人员12",
+            "frequency": 1
+        },
+        {
+            "number": 16,
+            "name": "人员13",
+            "frequency": 3
+        },
+        {
+            "number": 17,
+            "name": "人员14",
+            "frequency": 1
+        },
+        {
+            "number": 18,
+            "name": "人员15",
+            "frequency": 3
+        },
+        {
+            "number": 19,
+            "name": "人员16",
+            "frequency": 1
+        }
+    ]
+}
