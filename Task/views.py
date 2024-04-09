@@ -205,11 +205,11 @@ class Algorithm3(View):
                 msg = f'当前值更表，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
-            if not manual_choice and not people_position_data:
+            if manual_choice and not people_position_data:
                 msg = f'上次调用算法返回的任务人员分配方案，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
-            if not task_time:
+            if not manual_choice and not task_time:
                 msg = f'任务时间，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
