@@ -40,8 +40,8 @@ opt_method_value_map = {
 
 @unique
 class PersonChoice(BaseEnum):
+    no_need = 0
     need = 1
-    no_need = 2
 
     @classmethod
     def value_name(cls, value):
@@ -49,6 +49,6 @@ class PersonChoice(BaseEnum):
 
 
 person_choice_value_map = {
-    PersonChoice.need.value: "人员需要逐个确认",
-    PersonChoice.no_need.value: "人员不需要逐个确认",
+    PersonChoice.no_need.value: "人员不需要进行选择",
+    PersonChoice.need.value: "人员需要进行选择",
 }

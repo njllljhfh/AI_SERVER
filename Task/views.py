@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.views import View
 
 from algorithms.algorithm2.algorithm2 import algorithm2
+from algorithms.algorithm3.task_person_algorithm_v12 import task_person_algorithm, task_person_algorithm_choice
 from algorithms.person_position_match import recommend_person, recommend_position, recommend_matrix, NpEncoder
 from utils.enumerationClass.common_enum import Option, OptMethod, PersonChoice
 from utils.enumerationClass.response_code_enum import jsonify, ResponseCode
@@ -181,22 +182,39 @@ class Algorithm3(View):
     def post(self, request):
         try:
             params = json.loads(request.body)
-            task = params['task']  # 部署任务：中船提供的数据，json数据
-            scheduling = params['scheduling']  # 当前值更表：算法二的输出结果，json数据
-            task_time = params['task_time']  # 任务时间  "13:00-14:00"
+            task = params['task']  # 部署任务：中船提供的数据（测试时，算法提供测试数据）
+            persons = params['persons']  # 舰上所有人员以及被派遣次数：中船提供的数据（测试时，算法提供测试数据）
+            scheduling = params['scheduling']  # 当前值更表：算法二的输出结果，json数据。
+            task_time = params['task_time']  # 从 scheduling 里面选择某一天。选择时间段
+            persons_value = params['persons_value']  # 舰上所有人员对任务中岗位的匹配矩阵：算法一的result3输出结果，json数据。
             person_choice = params['person_choice']  # 人员是否需要逐个确认
-            manual_choice = params['manual_choice']  # 人工选择过的数据
+            # 人工选择过的数据,
+            # 当 person_choice 为 1 时：如果接口返回数据中 "任务可调整人数" 字段为 0 表明没有可用于调整的人员了，不需要再次发送请求。
+            manual_choice = params.get('manual_choice', None)
+            people_position_data = params.get('people_position_data', None)  # 上次调用算法返回的任务人员分配方案
 
             if not task:
                 msg = f'部署任务，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
-            if not scheduling:
+            if not persons:
+                msg = f'舰上所有人员以及被派遣次数，不能为空'
+                return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
+
+            if not manual_choice and not scheduling:
                 msg = f'当前值更表，不能为空'
+                return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
+
+            if not manual_choice and not people_position_data:
+                msg = f'上次调用算法返回的任务人员分配方案，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
             if not task_time:
                 msg = f'任务时间，不能为空'
+                return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
+
+            if not persons_value:
+                msg = f'舰上所有人员对任务中岗位的匹配矩阵，不能为空'
                 return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
 
             if not PersonChoice.value_exists(person_choice):
@@ -205,11 +223,19 @@ class Algorithm3(View):
 
             logger.info(f"person_choice：{PersonChoice.value_name(person_choice)}")
             if person_choice == PersonChoice.need.value:
-                if not manual_choice:
-                    msg = f"{PersonChoice.value_name(person_choice)}, 必须传递 manual_choice（人工选择过的数据）"
-                    return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
-                else:
-                    manual_choice = None
+                choice_data = {
+                    "code": person_choice,
+                    "message": "人员需要进行选择"
+                }
+                # if not manual_choice:
+                #     msg = f"{PersonChoice.value_name(person_choice)}, 必须传递 manual_choice（人工选择过的数据）"
+                #     return JsonResponse(jsonify(code=ResponseCode.PARAMETER_ERROR.value, msg=msg))
+            else:
+                choice_data = {
+                    "code": person_choice,
+                    "message": "人员不需要进行选择"
+                }
+
         except KeyError as e:
             logger.error(e, exc_info=True)
             msg = f"请求参数缺失: {e}"
@@ -219,18 +245,23 @@ class Algorithm3(View):
             return JsonResponse(jsonify(code=ResponseCode.UNKNOWN_ERROR.value))
 
         try:
-            # res = algorithm3(task, scheduling, task_time, person_choice, manual_choice)
             # 测试数据
-            with open('./test_data/algo3/algo3_result.json', 'r', encoding='utf-8') as f:
-                res = json.loads(f.read())
+            # with open('./test_data/algo3/algo3_result.json', 'r', encoding='utf-8') as f:
+            #     res = json.loads(f.read())
             # ---
+
+            if not manual_choice:
+                res = task_person_algorithm(task, persons, scheduling, persons_value, task_time, choice_data)
+            else:
+                res = task_person_algorithm_choice(task, persons, persons_value,
+                                                   people_position_data, manual_choice, choice_data)
 
             if res['code'] == ResponseCode.SUCCESS.value:
                 logger.info(f'algorithm3 执行返回成功')
                 return JsonResponse(jsonify(code=ResponseCode.SUCCESS.value, data=res['data']))
             else:
                 logger.info(f'algorithm3 执行返回失败，code 为 {res["code"]}')
-                return JsonResponse(jsonify(code=res['code'], msg=res['message']))
+                return JsonResponse(jsonify(code=res['code'], msg=res['msg']))
         except Exception as e:
             msg = f'algorithm3 执行报错: {e}'
             logger.error(msg, exc_info=True)

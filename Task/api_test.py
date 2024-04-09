@@ -147,33 +147,69 @@ def api_algorithm2(opt_method=None):
     print('- ' * 30)
 
 
-def api_algorithm3(person_choice=None):
+def api_algorithm3(person_choice=None, manual_choice=False):
     url = f'http://{IP}:{PORT}/api/task/algorithm3'
     print(f"测试url: {url}")
 
-    task = {'task': '算法提供测试数据'}  # 算法提供测试数据
-    persons = {'persons': '算法提供测试数据'}  # 算法提供测试数据
-
-    with open('../test_data/algo2/输出结果排班表&辅助决策输入人工排班表.json', 'r', encoding='utf-8') as f:
-        algo2_res = json.loads(f.read())
-        scheduling = algo2_res['data']
-
-    with open('../test_data/algo1/r3.json', 'r', encoding='utf-8') as f:
+    with open('../test_data/algo3/task.json', 'r', encoding='utf-8') as f:
+        # 读入任务数据
+        task_data = json.loads(f.read())
+    with open('../test_data/algo3/persons.json', 'r', encoding='utf-8') as f:
+        # 读入人员信息
+        people_data = json.loads(f.read())
+    with open('../test_data/algo3/scheduling.json', 'r', encoding='utf-8') as f:
+        # 读入排班数据
+        scheduling_data = json.loads(f.read())
+    with open('../test_data/algo3/task_time.json', 'r', encoding='utf-8') as f:
+        # 读入任务时间
+        time_data = json.loads(f.read())
+    with open('../test_data/algo3/persons_value.json', 'r', encoding='utf-8') as f:
+        # 读入匹配数据
         persons_value = json.loads(f.read())
-
-    params = {
-        'task': task,
-        'persons': persons,
-        'scheduling': scheduling,
-        'task_time': "13:00-14:00",
-        'persons_value': persons_value,
-        'person_choice': person_choice,
-        'manual_choice': None,
-    }
+    with open('../test_data/algo3/persons_choice.json', 'r', encoding='utf-8') as f:
+        # 读取人员是否进行选择
+        choice_data = json.loads(f.read())
 
     if person_choice == PersonChoice.need.value:
-        manual_choice = {'manual_choice': "算法提供测试数据"}  # 算法提供测试数据
-        params['manual_choice'] = manual_choice
+        if not manual_choice:
+            params = {
+                'task': task_data,
+                'persons': people_data,
+                'scheduling': scheduling_data,
+                'task_time': time_data,
+                'persons_value': persons_value,
+                'person_choice': choice_data['code'],
+                'manual_choice': None,
+                'people_position_data': None,
+            }
+        else:
+            with open('../test_data/algo3/output_suc_choice.json', 'r', encoding='utf-8') as f:
+                # 读取当前任务人员分配方案
+                people_position_data = json.loads(f.read())
+            with open('../test_data/algo3/manual_choice.json', 'r', encoding='utf-8') as f:
+                # 读入人员选择结果
+                task_assignment_choice_data = json.loads(f.read())
+            params = {
+                'task': task_data,
+                'persons': people_data,
+                'scheduling': None,
+                'task_time': None,
+                'persons_value': persons_value,
+                'person_choice': choice_data['code'],
+                'manual_choice': task_assignment_choice_data,
+                'people_position_data': people_position_data,
+            }
+    else:
+        params = {
+            'task': task_data,
+            'persons': people_data,
+            'scheduling': scheduling_data,
+            'task_time': time_data,
+            'persons_value': persons_value,
+            'person_choice': choice_data['code'],
+            'manual_choice': None,
+            'people_position_data': None,
+        }
 
     # 如果发送的是 JSON 数据，使用 json 参数；如果是表单数据，使用 data 参数
     response = requests.post(url, json=params)
@@ -217,18 +253,18 @@ if __name__ == '__main__':
     # get 测试接口
     # api_myTest()
 
-    # post 算法1测试接口
     # option = Option.person_rec.value  # 1 船员推荐
-    # option = Option.position_rec.value  # 2 战位推荐
-    # option = Option.match_matrix.value  # 3 匹配矩阵
+    # # option = Option.position_rec.value  # 2 战位推荐
+    # # option = Option.match_matrix.value  # 3 匹配矩阵
     # api_algorithm1(option=option)
     # -------------------------------------------------------
 
-    opt_method = OptMethod.assistant_decision.value  # 辅助决策
-    # opt_method = OptMethod.global_opt.value  # 全局优化
-    api_algorithm2(opt_method=opt_method)
+    # opt_method = OptMethod.assistant_decision.value  # 辅助决策
+    # # opt_method = OptMethod.global_opt.value  # 全局优化
+    # api_algorithm2(opt_method=opt_method)
     # -------------------------------------------------------
 
-    # person_choice = PersonChoice.no_need.value  # 人员不需要逐个确认
-    # # person_choice = PersonChoice.need.value  # 人员需要逐个确认
-    # api_algorithm3(person_choice=person_choice)
+    # person_choice = PersonChoice.no_need.value  # 人员不需要进行选择
+    person_choice = PersonChoice.need.value  # 人员需要进行选择
+    api_algorithm3(person_choice=person_choice, manual_choice=False)  # 第一次
+    # api_algorithm3(person_choice=person_choice, manual_choice=True)  # 第二次
