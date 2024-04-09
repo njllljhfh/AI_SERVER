@@ -66,36 +66,6 @@
 			"number": 13,
 			"name": "人员10",
 			"frequency": 1
-		},
-		{
-			"number": 14,
-			"name": "人员11",
-			"frequency": 2
-		},
-		{
-			"number": 15,
-			"name": "人员12",
-			"frequency": 0
-		},
-		{
-			"number": 16,
-			"name": "人员13",
-			"frequency": 2
-		},
-		{
-			"number": 17,
-			"name": "人员14",
-			"frequency": 0
-		},
-		{
-			"number": 18,
-			"name": "人员15",
-			"frequency": 3
-		},
-		{
-			"number": 19,
-			"name": "人员16",
-			"frequency": 0
 		}
 	]
 }
