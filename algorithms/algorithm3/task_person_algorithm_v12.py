@@ -2,11 +2,6 @@ import json
 import os  # 导入os模块
 import random
 import time
-# import sys
-#
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# sys.path.append(BASE_DIR)
-
 
 def read_json_file(filename):
     """通用函数从JSON文件读取数据"""
@@ -147,23 +142,12 @@ def execute_query_and_show_remaining(scheduling_info, time_info, people_info):
     query_day = time_info['task_day']
     query_time_range = time_info['task_time_range']
 
-    #print(f"正在查询 {query_day}, 时间段 {query_time_range} 的排班信息...")
     queried_people=remove_queried_people(scheduling_info, query_day, query_time_range)
-    #print("已查询的人员:")
-    #for person in queried_people:
-     #   print(f"- 编号: {person}")
 
     remaining_people_info = update_remaining_people(queried_people, people_info)
     print("舰艇机动人员人数:", len(remaining_people_info))
 
 
-   # print("剩余人员信息:")
-    #for number, info in remaining_people_info.items():
-     #   print(f"编号: {number}, 名字: {info['name']}")
-    # 使用print语句替代了之前的打印逻辑
-    #print("正在保存剩余人员信息...")
-    # 保存剩余人员信息到JSON文件
-    #save_remaining_people_to_json(remaining_people_info, 'remaining_people_info.json')
     return remaining_people_info,queried_people
 
 #根据历史派遣次数更新匹配矩阵
@@ -186,7 +170,6 @@ def update_matching_matrix_1(matching_matrix_info, people_info):
                 updated_scores[person] = score
                 updated_scores[person_str] = updated_score
         updated_matching_matrix[position_name] = updated_scores
-    #print(updated_matching_matrix)
     return updated_matching_matrix
 
 #根据在岗信息更新匹配矩阵
@@ -219,7 +202,6 @@ def update_matching_matrix_2_1(updated_matching_matrix, queried_people):
 #把queried_people的信息清零
 def update_data(queried_people,people_info,matching_matrix_info):
     # 更新匹配矩阵
-    # updated_matching_matrix = update_matching_matrix(matching_matrix_info, people_info)
 
     updated_matching_matrix = update_matching_matrix_1(matching_matrix_info, people_info)
     update_matching_matrix = update_matching_matrix_2(updated_matching_matrix, queried_people)
@@ -278,8 +260,6 @@ def update_matching_matrix_3(updated_matching_matrix, position, people_position)
     if position in updated_matching_matrix:
         # 获取更新后的当前岗位的人员信息
         position_info = updated_matching_matrix[position]
-        #print("position_info",position_info)
-        #print("people_position",people_position)
 
         # 将people_position中的所有人员的适配度设为0
         for position, people_list in people_position.items():
@@ -328,7 +308,6 @@ def sort_people_position_by_position(people_position):
 def update_remaining_people_info(remaining_people_info, people_position):
     """
     移除 remaining_people_info 中被 people_position 指定的人员信息。
-
     :param remaining_people_info: 包含人员信息的字典。
     :param people_position: 指定需要移除的人员编号的字典。
     :return: 更新后的人员信息字典。
@@ -364,17 +343,14 @@ def out(people_position, position_remaining_required_people):
         }
         data["岗位信息"].append(position_data)
 
-    # 将数据写入JSON文件
-    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc.json", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+        # 最后，将 data 字典封装到最外层的结构中，并加上 "code" 和 "msg" 字段
+    output = {
+        "code": 1,  # 1表示成功
+        "msg": "成功",
+        "data": data
+    }
+    return output
 
-
-#   result=assignment_check(len(remaining_people_info),len(task_info))
-  #  print(result["result"])
-   # sort_people_position= sort_people_position_by_position(people_position)
-    #print(sort_people_position)
-    # 保存信息到JSON文件
-    #save_assignment_people_to_json(result, sort_people_position, 'assignment_people_info.json')
 
 def check_task_completion(people_position, position_remaining_required_people):
     total_remaining_required_people = sum(position_remaining_required_people.values())
@@ -435,15 +411,17 @@ def out_1(people_position, position_remaining_required_people,remaining_people_i
         data["机动人员信息"].append({
             "number": person_id,
             "name": info['name'],
-            "frequency": info['frequency']
-        })
+            "frequency": info['frequency']})
 
-    # 将数据写入JSON文件
-    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
+        # 最后，将 data 字典封装到最外层的结构中，并加上 "code" 和 "msg" 字段
+    output = {
+        "code": 1,  # 1表示成功
+        "msg": "成功",
+        "data": data
+    }
+    return output
 
 def task_assignment_choice(data):
-    # 使用read_json_file函数读取JSON文件
 
     # 初始化两个字典用于存储保留岗位信息和需替换岗位信息
     people_position_or = {}
@@ -515,7 +493,6 @@ def out_2(people_position, people_position_de,change_people_position, remaining_
         "置换方案": [],
         "机动人员信息": []
     }
-
     # 遍历每个岗位，并将信息存储到字典中
     for position, remaining_required_people in sorted_change_people_position.items():
         assigned_people = people_position.get(position, [])
@@ -544,16 +521,26 @@ def out_2(people_position, people_position_de,change_people_position, remaining_
             "name": info['name'],
             "frequency": info['frequency']
         })
-    # 将数据写入JSON文件
-    with open("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json", "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=4)
 
-def get_people_position_data(data):
-    people_position = {item["岗位名称"]: item["已派遣人员"] for item in data["岗位信息"]}
-    position_remaining_required_people = {item["岗位名称"]: item["缺失人数"] for item in data["岗位信息"]}
+        # 最后，将 data 字典封装到最外层的结构中，并加上 "code" 和 "msg" 字段
+    output = {
+        "code": 1,  # 1表示成功
+        "msg": "成功",
+        "data": data
+    }
+    return output
+
+def get_people_position_data(task_info):
+    data_1 = task_info['data']
+    # 提取岗位信息，将岗位名称映射到已派遣人员
+    people_position = {item["岗位名称"]: item["已派遣人员"] for item in data_1["岗位信息"]}
+    # 提取每个岗位的缺失人数
+    position_remaining_required_people = {item["岗位名称"]: item["缺失人数"] for item in data_1["岗位信息"]}
+    # 提取机动人员信息，包括编号、名字和频率
     remaining_people_info = {person["number"]: {"name": person["name"], "frequency": person["frequency"]} for person in
-                             data["机动人员信息"]}
-    return people_position, position_remaining_required_people,remaining_people_info
+                             data_1["机动人员信息"]}
+    return people_position, position_remaining_required_people, remaining_people_info
+
 
 def task_person_algorithm(task_data,people_data,scheduling_data,matching_data,time_data,choice_data):
     #load数据
@@ -568,9 +555,7 @@ def task_person_algorithm(task_data,people_data,scheduling_data,matching_data,ti
     position_completed = {}  # 已分配岗位
     people_position = {}  # 已分配人员
     position_remaining_required_people = {}
-    total_people = 0
 
-    # print(task_info)
 
     # 获取值班人员和机动人员信息
     remaining_people_info, queried_people = execute_query_and_show_remaining(scheduling_info, time_data,
@@ -588,182 +573,108 @@ def task_person_algorithm(task_data,people_data,scheduling_data,matching_data,ti
         selected_people, remaining_required_people = people_group_selection(position_info, required_people)
         people_position[selected_position] = selected_people
         position_remaining_required_people[selected_position] = remaining_required_people
-        # print(position_remaining_required_people)
-        # print(people_position)
+
         position_completed[selected_position] = True
         remove_selected_position(READY, selected_position)
 
-        # total_people+=len(selected_people)
-        # print(total_people)
-        # print(len(remaining_people_info))
 
     if choice_data['code'] == 0:
         check_task_completion(people_position, position_remaining_required_people)
-        out(people_position, position_remaining_required_people)
-        # print('people_position, position_remaining_required_people',people_position, position_remaining_required_people)
-        # print("已执行out函数，并生成了output_suc.json文件。")
-        # 从people_position中提取所有的人员编号,更新people.json中的频率并输出
-
-
-        #print('people_info',people_info)
-        # 从people_position中提取所有的人员编号，并转换为整型
-        specified_people = {int(num) for positions in people_position.values() for num in positions}
-
-        # 遍历people_info更新frequency，这里people_info直接是一个包含人员编号作为键的字典
-        for person_number in people_info:
-            if person_number in specified_people:
-                people_info[person_number]["frequency"] += 1
-        #print('people_info', people_info)
-
-        # 将字典转换为列表结构，以匹配原始JSON格式
-        people_list = [{"number": number, "name": info["name"], "frequency": info["frequency"]} for number, info in
-                       people_info.items()]
-
-        # 将转换后的列表包装在一个新的字典中，以匹配原始JSON文件的结构
-        updated_people_info = {"person": people_list}
-
-        # 定义要写入的新JSON文件的路径
-        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
-
-        # 写入JSON文件
-        with open(file_path, 'w', encoding='utf-8') as file:
-            json.dump(updated_people_info, file, ensure_ascii=False, indent=4)
+        return out(people_position, position_remaining_required_people)
     else:
         remaining_people_info = update_remaining_people_info(remaining_people_info, people_position)
         check_task_completion_1(people_position, position_remaining_required_people, remaining_people_info)
-        out_1(people_position, position_remaining_required_people, remaining_people_info)
-        #print('people_info', people_info)
-        # 从people_position中提取所有的人员编号，并转换为整型
-        specified_people = {int(num) for positions in people_position.values() for num in positions}
+        return out_1(people_position, position_remaining_required_people, remaining_people_info)
 
-        # 遍历people_info更新frequency，这里people_info直接是一个包含人员编号作为键的字典
-        for person_number in people_info:
-            if person_number in specified_people:
-                people_info[person_number]["frequency"] += 1
-        #print('people_info', people_info)
-
-        # 将字典转换为列表结构，以匹配原始JSON格式
-        people_list = [{"number": number, "name": info["name"], "frequency": info["frequency"]} for number, info in
-                       people_info.items()]
-
-        # 将转换后的列表包装在一个新的字典中，以匹配原始JSON文件的结构
-        updated_people_info = {"person": people_list}
-
-        # 定义要写入的新JSON文件的路径
-        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json'
-
-        # 写入JSON文件
-        with open(file_path, 'w', encoding='utf-8') as file:
-            json.dump(updated_people_info, file, ensure_ascii=False, indent=4)
 
 def task_person_algorithm_choice(task_data,people_data,matching_data,people_position_data,task_assignment_choice_data,choice_data):
-    people_position, position_remaining_required_people, remaining_people_info = get_people_position_data(people_position_data)
-    if choice_data['code'] == 1 and len(remaining_people_info)>0:
-        task_info = prepare_bushu_data(task_data)
-        people_info = prepare_people_data(people_data)
-        people_position_or, people_position_de = task_assignment_choice(task_assignment_choice_data)
+    # 检查 'data' 键是否存在，然后再访问 '任务可调整人数'
+    if 'data' in people_position_data and '任务可调整人数' in people_position_data['data']:
+        adjustable_number = people_position_data['data']['任务可调整人数']
+        print(f"任务可调整人数: {adjustable_number}")
+        people_position, position_remaining_required_people, remaining_people_info = get_people_position_data(
+            people_position_data)
+        if choice_data['code'] == 1 and len(remaining_people_info) > 0:
+            task_info = prepare_bushu_data(task_data)
+            people_info = prepare_people_data(people_data)
+            people_position_or, people_position_de = task_assignment_choice(task_assignment_choice_data)
 
-        #print('people_info', people_info)
-        # 从people_position中提取所有的人员编号，并转换为整型
-        specified_people = {int(num) for positions in people_position_de.values() for num in positions}
+            matching_info = prepare_matching_matrix_data(matching_data)
+            # 更新匹配矩阵，只保留剩余机动人员的匹配度
+            update_matching_matrix_choice = update_data_2(remaining_people_info, people_info, matching_info)
+            READY_1 = update_positions_with_priority(people_position_de, task_info)
+            # 将people_position中的内容转为数组
+            assignmen_person_ids = []
+            for person_ids in people_position.values():
+                assignmen_person_ids.extend(person_ids)
+            assignmen_person_ids = sorted(set(int(id) for id in assignmen_person_ids))
 
-        # 遍历people_info更新frequency，这里people_info直接是一个包含人员编号作为键的字典
-        for person_number in people_info:
-            if person_number in specified_people:
-                people_info[person_number]["frequency"] -= 1
-        #print('people_info', people_info)
+            change_position_completed = {}  # 已分配待替换岗位
+            change_people_position = {}  # 待替换已分配人员
+            while len(change_position_completed) < len(people_position_de):
+                selected_position, required_people = select_position_by_priority(READY_1)
+                position_info = update_matching_matrix_3(update_matching_matrix_choice, selected_position,
+                                                         change_people_position)
+                selected_people, remaining_required_people = people_group_selection(position_info, required_people)
+                change_people_position[selected_position] = selected_people
+                position_remaining_required_people[selected_position] = remaining_required_people
+                change_position_completed[selected_position] = True
+                remove_selected_position(READY_1, selected_position)
+            remaining_people_info = update_remaining_people_info(remaining_people_info, change_people_position)
+            # 将补充人员添加到保留人员分配方案里
+            for position, new_person_ids in change_people_position.items():
+                # 如果岗位已存在于people_position_or中，则更新该岗位的人员编号列表
+                if position in people_position_or:
+                    # 直接添加新的人员编号到对应岗位的列表中
+                    people_position_or[position].extend(new_person_ids)
+                else:
+                    # 如果岗位不存在于people_position_or中，则直接添加岗位和其人员编号列表
+                    people_position_or[position] = new_person_ids
+            check_task_completion_2(people_position_or, people_position_de, change_people_position,
+                                    remaining_people_info)
+            return out_2(people_position, people_position_de, change_people_position, remaining_people_info)
+        else:
+            output = {
+                "code": 2,  # 1表示成功
+                "msg": "目前无机动人员可进行替换", }
+            print('目前无机动人员可进行替换')
+            return output
+        if people_position_data['data']['任务可调整人数'] == 0:
+            output = {
+                "code": 2,  # 1表示成功
+                "msg": "目前无机动人员可进行替换", }
+            return output
 
-
-        matching_info = prepare_matching_matrix_data(matching_data)
-        # 更新匹配矩阵，只保留剩余机动人员的匹配度
-        update_matching_matrix_choice = update_data_2(remaining_people_info, people_info, matching_info)
-        READY_1 = update_positions_with_priority(people_position_de, task_info)
-        # 将people_position中的内容转为数组
-        assignmen_person_ids = []
-        for person_ids in people_position.values():
-            assignmen_person_ids.extend(person_ids)
-        assignmen_person_ids = sorted(set(int(id) for id in assignmen_person_ids))
-
-        change_position_completed = {}  # 已分配待替换岗位
-        change_people_position = {}  # 待替换已分配人员
-        while len(change_position_completed) < len(people_position_de):
-            selected_position, required_people = select_position_by_priority(READY_1)
-            position_info = update_matching_matrix_3(update_matching_matrix_choice, selected_position,
-                                                     change_people_position)
-            selected_people, remaining_required_people = people_group_selection(position_info, required_people)
-            change_people_position[selected_position] = selected_people
-            # print('change_people_position',change_people_position)
-            position_remaining_required_people[selected_position] = remaining_required_people
-            # print(position_remaining_required_people)
-            # print(people_position)
-            change_position_completed[selected_position] = True
-            remove_selected_position(READY_1, selected_position)
-        remaining_people_info = update_remaining_people_info(remaining_people_info, change_people_position)
-        # 将补充人员添加到保留人员分配方案里
-        for position, new_person_ids in change_people_position.items():
-            # 如果岗位已存在于people_position_or中，则更新该岗位的人员编号列表
-            if position in people_position_or:
-                # 直接添加新的人员编号到对应岗位的列表中
-                people_position_or[position].extend(new_person_ids)
-            else:
-                # 如果岗位不存在于people_position_or中，则直接添加岗位和其人员编号列表
-                people_position_or[position] = new_person_ids
-        check_task_completion_2(people_position_or, people_position_de, change_people_position, remaining_people_info)
-        out_2(people_position, people_position_de, change_people_position, remaining_people_info)
-
-        #print('people_info', people_info)
-        # 从people_position中提取所有的人员编号，并转换为整型
-        specified_people = {int(num) for positions in change_people_position.values() for num in positions}
-
-        # 遍历people_info更新frequency，这里people_info直接是一个包含人员编号作为键的字典
-        for person_number in people_info:
-            if person_number in specified_people:
-                people_info[person_number]["frequency"] += 1
-        #print('people_info', people_info)
-
-        # 将字典转换为列表结构，以匹配原始JSON格式
-        people_list = [{"number": number, "name": info["name"], "frequency": info["frequency"]} for number, info in
-                       people_info.items()]
-
-        # 将转换后的列表包装在一个新的字典中，以匹配原始JSON文件的结构
-        updated_people_info = {"person": people_list}
-
-        # 定义要写入的新JSON文件的路径
-        file_path = '/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json'
-
-        # 写入JSON文件
-        with open(file_path, 'w', encoding='utf-8') as file:
-            json.dump(updated_people_info, file, ensure_ascii=False, indent=4)
     else:
-        print('目前无机动人员可进行替换')
+        output = {
+            "code": 2,  # 1表示成功
+            "msg": "目前无机动人员可进行替换", }
+        return output
+
 
 
 if __name__ == '__main__':
-    start_time = time.time()
-    # 示例调用
-    task_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/task_4G_10P_simple.json')
-    # 获取人员信息
-    people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people19.json')
 
-
-    scheduling_data=read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/scheduling_5day_4geng_4gang.json')
-
-    time_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/task_time1.json')
-
-    matching_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/matching_matrix19_4gang.json')
-    # 读取JSON文件并判断code值
-    choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/choice_1.json')
-
-
-
+    # 读入任务数据
+    task_data = read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/task.json")
+    # 读入人员信息
+    people_data = read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/persons.json")
+    #读入排班数据
+    scheduling_data=read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/scheduling.json")
+    #读入任务时间
+    time_data = read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/task_time.json")
+    #读入匹配数据
+    matching_data = read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/persons_value.json")
+    # 读取人员是否进行选择
+    choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/persons_choice.json')
+    #运行函数task_person_algorithm，返回任务人员匹配结果
     task_person_algorithm(task_data, people_data, scheduling_data, matching_data, time_data, choice_data)
-    people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info.json')
-    people_position_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json')
-    # 读入系统选择
-    task_assignment_choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people_choice.json')
+
+    #读取当前任务人员分配方案
+    people_position_data = read_json_file("/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice.json")
+    # 读入人员选择结果
+    task_assignment_choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/manual_choice.json')
+    #print('task_assignment_choice_data',task_assignment_choice_data)
+    # 运行函数task_person_algorithm_choice，更新任务人员匹配结果
     task_person_algorithm_choice(task_data, people_data, matching_data,  people_position_data,task_assignment_choice_data,choice_data)
-    people_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/updated_people_info_new.json')
-    people_position_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/output_suc_choice_new.json')
-    task_assignment_choice_data = read_json_file('/home/phytium/projects/AI_SERVER/test_data/algo3/people_choice_1.json')
-    task_person_algorithm_choice(task_data, people_data,  matching_data, people_position_data,task_assignment_choice_data,choice_data)
 
