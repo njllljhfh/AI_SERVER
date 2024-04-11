@@ -1,5 +1,5 @@
 """
-Django settings for ADC5000 project.
+Django settings for AI_SERVER project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/3.0/topics/settings/

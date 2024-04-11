@@ -1,5 +1,5 @@
 """
-WSGI config for ADC5000 project.
+WSGI config for AI_SERVER project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

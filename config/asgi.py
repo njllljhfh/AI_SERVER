@@ -1,5 +1,5 @@
 """
-ASGI config for ADC5000 project.
+ASGI config for AI_SERVER project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
