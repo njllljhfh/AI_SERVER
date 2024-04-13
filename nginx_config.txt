@@ -4,12 +4,9 @@ upstream ai_server {
 
 server {
         listen 8090;
-
         root /usr/webview/dist9100;
-
         index index.html index.htm index.nginx-debian.html;
-
-        server_name xxx;
+        server_name 127.0.0.1;
 
         location / {
             try_files $uri $uri/ /index.html;
@@ -22,10 +19,6 @@ server {
             include uwsgi_params;
             uwsgi_pass ai_server;
             proxy_read_timeout 3600;
-            add_header Access-Control-Allow-Origin *;
-            add_header Access-Control-Allow-Methods "POST, GET, DELETE, PUT, OPTIONS, PATCH, HEAD, TRACE";
-            add_header Access-Control-Allow-Credentials true;
-            add_header Access-Control-Allow-Headers *;
         }
 
         client_max_body_size 1000m;
