@@ -26,6 +26,7 @@ option_value_map = {
 class OptMethod(BaseEnum):
     assistant_decision = 1
     global_opt = 2
+    deep_opt = 3
 
     @classmethod
     def value_name(cls, value):
@@ -35,6 +36,7 @@ class OptMethod(BaseEnum):
 opt_method_value_map = {
     OptMethod.assistant_decision.value: "辅助决策",
     OptMethod.global_opt.value: "全局优化",
+    OptMethod.deep_opt.value: "深度优化",
 }
 
 
